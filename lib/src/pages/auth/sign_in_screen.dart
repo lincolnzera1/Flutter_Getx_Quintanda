@@ -7,8 +7,13 @@ import 'package:greengrocer/src/pages/common_widgets/custom_text_field.dart';
 import 'package:greengrocer/src/pages/auth/sign_up_screen.dart';
 import 'package:greengrocer/src/pages/base/base_screen.dart';
 import 'package:greengrocer/src/pages_routes/app_pages.dart';
+import 'package:dio/dio.dart';
 
 import 'controller/auth_controller.dart';
+
+class Teste extends GetxController {
+  RxString texto = "".obs;
+}
 
 class SignInScreen extends StatelessWidget {
   SignInScreen({Key? key}) : super(key: key);
@@ -20,6 +25,7 @@ class SignInScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final Teste teste = Teste();
 
     return Scaffold(
       backgroundColor: CustomColors.customSwatchColor,
@@ -124,25 +130,30 @@ class SignInScreen extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(18),
                                 ),
                               ),
-                              onPressed: _.isLoading.value ? null : () {
-                                /* Navigator.of(context)
+                              onPressed: _.isLoading.value
+                                  ? null
+                                  : () {
+                                      /* Navigator.of(context)
                                                         .pushReplacement(MaterialPageRoute(builder: (c) {
                                                       return BaseScreen();
                                                     })); */
-                                FocusScope.of(context).unfocus(); // Tira o teclado ao apertar em entrar.
+                                      FocusScope.of(context)
+                                          .unfocus(); // Tira o teclado ao apertar em entrar.
 
-                                if (_formKey.currentState!.validate()) {
-                                  print("Todos os campos estão válidos");
+                                      if (_formKey.currentState!.validate()) {
+                                        print("Todos os campos estão válidos");
 
-                                  print(
-                                      "Email: ${emailController.text}\nSenha: ${passwordController.text}");
+                                        print(
+                                            "Email: ${emailController.text}\nSenha: ${passwordController.text}");
 
-                                  _.signIn(email: emailController.text, password: passwordController.text);
-                                  // Get.offNamed(PagesRoutes.baseRoute);
-                                } else {
-                                  print("O inferno é aqui");
-                                }
-                              },
+                                        _.signIn(
+                                            email: emailController.text,
+                                            password: passwordController.text);
+                                        // Get.offNamed(PagesRoutes.baseRoute);
+                                      } else {
+                                        print("O inferno é aqui");
+                                      }
+                                    },
                               child: _.isLoading.value
                                   ? const CircularProgressIndicator()
                                   : const Text(
@@ -160,7 +171,32 @@ class SignInScreen extends StatelessWidget {
                       Align(
                         alignment: Alignment.centerRight,
                         child: TextButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            try {
+
+                              // Requisição GET
+
+                              /* var response = await Dio().get(
+                                  "https://jsonplaceholder.typicode.com/posts/11");
+                              print(response.data);
+                              teste.texto.value = response.data.toString(); */
+
+                              // Requisição POST
+
+                              /* var response = await Dio().post(
+                                  "https://jsonplaceholder.typicode.com/posts/",
+                                  data: {
+                                    "I tried so hard": "And get so far",
+                                    "but in the end": "it doenst even matter"
+                                  });
+                              print(response.data); */
+
+
+                            } on DioError catch (e) {
+                              // print("erro generio: ${e}");
+                              print("Error statusCode: ${e.response?.statusCode}");
+                            }
+                          },
                           child: Text(
                             'Esqueceu a senha?',
                             style: TextStyle(
@@ -226,6 +262,7 @@ class SignInScreen extends StatelessWidget {
                           ),
                         ),
                       ),
+                      // Obx(() => Text("OS dados jotason: ${teste.texto}"))
                     ],
                   ),
                 ),
